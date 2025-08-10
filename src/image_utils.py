@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
 
 def align_and_crop_grid(image_path, output_size=(900, 900)):
     """
@@ -52,3 +53,24 @@ def align_and_crop_grid(image_path, output_size=(900, 900)):
     warped = cv2.warpPerspective(img, M, output_size)
 
     return warped
+
+def crop_center(img, cropx, cropy):
+    y, x = img.shape[:2]
+    startx = x // 2 - (cropx // 2)
+    starty = y // 2 - (cropy // 2)
+    return img[starty:starty+cropy, startx:startx+cropx]
+
+def plot_original_and_aligned(original_image, aligned_image):
+
+    # Convert images from BGR to RGB for correct display
+    original_rgb = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB)
+    warped_rgb = cv2.cvtColor(aligned_image, cv2.COLOR_BGR2RGB)
+
+    fig, axes = plt.subplots(1, 2, figsize=(12, 6))
+    axes[0].imshow(original_rgb)
+    axes[0].set_title('Original')
+    axes[0].axis('off')
+
+    axes[1].imshow(warped_rgb)
+
+    return
